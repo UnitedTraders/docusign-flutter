@@ -9,18 +9,18 @@ void main() {
   runApp(const MyApp());
 }
 
-const String accessToken = r'eyJ0eXAiOiJNVCIsImFsZyI6IlJTMjU2Iiwia2lkIjoiNjgxODVmZjEtNGU1MS00Y2U5LWFmMWMtNjg5ODEyMjAzMzE3In0.AQsAAAABAAUABwAALBnPrbDZSAgAAGw83fCw2UgCAAJ3ltDYvipBiNPp15RDK8cVAAEAAAAYAAEAAAAFAAAADQAkAAAAYzk3NzhhY2ItODE4MC00YWNjLWExNjgtM2QxOGRiOTgyZDBmIgAkAAAAYzk3NzhhY2ItODE4MC00YWNjLWExNjgtM2QxOGRiOTgyZDBmEgABAAAACwAAAGludGVyYWN0aXZlMACAawu5rbDZSDcA7nTvijZbqEOtjvAIVQg5pA.P8tTM1ZOdRw4gGuz2irjJimLlDe5vMULQUIvPOgVeLNFWoE3PdLRpY1rL5eXziLSkNjXapSce-b7BXiLreeyPg55wyBfE7KXpJc2N9TnaeLcPwGh3vdCxXWqg5XSfrCPQ88mDjyBj5p4O9N9pKOsRaxfz5pmgTddVZ2SXV03FOgvlIdHHuWdLpN43_AL94CkQbZRSTsnQSartL4IEbJE41CqY0L37n6v0oaKL2GCFojqLBo3H5T4ECHnKDNeCZRGyOQFSN4MDLoylV-ZliRN_KENKY-1dXrMKnI_5kT6pRao_UHWMOCmuXAy_q8UAwDIw4ARg10DOUhFMe6X5UG-yw';
-const String accountId = r'41cf0617-a663-4373-b1f1-3abfc2f80afe';
-const String email = r'alik@dizraptor.app';
-const String host = r'https://demo.docusign.net/restapi';
-const String integratorKey = r'c9778acb-8180-4acc-a168-3d18db982d0f';
-const String userId = r'd0967702-bed8-412a-88d3-e9d794432bc7';
-const String userName = r'Dizraptor';
+const String accessToken = r'<<NEED_CHANGE>>';
+const String accountId = r'<<NEED_CHANGE>>';
+const String email = r'<<NEED_CHANGE>>';
+const String host = r'<<NEED_CHANGE>>';
+const String integratorKey = r'<<NEED_CHANGE>>';
+const String userId = r'<<NEED_CHANGE>>';
+const String userName = r'<<NEED_CHANGE>>';
 
-const String envelopeId = r'914b4f9f-335f-4162-a53a-b550ca900776';
-const String recipientClientUserId = r'1000';
-const String recipientEmail = r'dilerarc18@gmail.com';
-const String recipientUserName = r'Valerio18';
+const String envelopeId = r'<<NEED_CHANGE>>';
+const String recipientClientUserId = r'<<NEED_CHANGE>>';
+const String recipientEmail = r'<<NEED_CHANGE>>';
+const String recipientUserName = r'<<NEED_CHANGE>>';
 
 class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
