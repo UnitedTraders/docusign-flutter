@@ -2,43 +2,32 @@ package com.unitedtraders.mobile.docusign_flutter
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.annotation.NonNull
-import com.docusign.androidsdk.DSEnvironment
 import com.docusign.androidsdk.DocuSign
-import com.docusign.androidsdk.dsmodels.DSUser
-import com.docusign.androidsdk.exceptions.DSAuthenticationException
 import com.docusign.androidsdk.exceptions.DSSigningException
-import com.docusign.androidsdk.listeners.DSAuthenticationListener
 import com.docusign.androidsdk.listeners.DSCaptiveSigningListener
 import com.google.gson.Gson
 
-import io.flutter.plugin.common.MethodChannel.Result
-import org.jetbrains.annotations.NotNull
-
-
-import com.docusign.androidsdk.listeners.DSOnlineSigningListener
-
-
-import com.docusign.androidsdk.delegates.DSSigningDelegate
-
-
-
 
 class WrapActivity : AppCompatActivity() {
-    private lateinit var result: Result
+    companion object {
+        private var firstRun: Boolean = true
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_wrap)
 
-        startCaptiveSigning()
+        if (!firstRun) {
+            firstRun = false
+            startCaptiveSigning()
+        }
     }
 
     private fun startCaptiveSigning() {
         val call = DataBrokerSingleton.instance.captiveSigningCall
         val result = DataBrokerSingleton.instance.captiveSigningResult
         if (call == null || result == null) {
-            return
+            throw IllegalStateException()
         }
 
         val params: DocusignFlutterPlugin.CaptiveSigningModel
@@ -77,11 +66,9 @@ class WrapActivity : AppCompatActivity() {
             }
 
             override fun onRecipientSigningSuccess(envelopeId: String, recipientId: String) {
-                print("onRecipientSigningSuccess")
             }
 
             override fun onStart(envelopeId: String) {
-                print("onStart")
             }
 
             override fun onSuccess(envelopeId: String) {

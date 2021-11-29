@@ -24,13 +24,8 @@ import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding
 
 
-
 /** DocusignFlutterPlugin */
 class DocusignFlutterPlugin: FlutterPlugin, MethodCallHandler, ActivityAware {
-  /// The MethodChannel that will the communication between Flutter and native Android
-  ///
-  /// This local reference serves to register the plugin with the Flutter Engine and unregister it
-  /// when the Flutter Engine is detached from the Activity
   private lateinit var channel : MethodChannel
   private lateinit var context: Context
   private lateinit var activity: Activity
@@ -66,42 +61,43 @@ class DocusignFlutterPlugin: FlutterPlugin, MethodCallHandler, ActivityAware {
       return
     }
 
-    /*
-       ????????????
-       accountId: authModel.accountId,
-       userId: authModel.userId,
-       userName: authModel.userName,
-       email: authModel.email,
-    */
+    try {
+      DocuSign.init(context, integratorKey = params.integratorKey, mode = DSMode.DEBUG)
+      DocuSign.getInstance().setEnvironment(DSEnvironment.DEMO_ENVIRONMENT)
+      val authDelegate = DocuSign.getInstance().getAuthenticationDelegate()
+      authDelegate.login(
+        accessToken = params.accessToken,
+        refreshToken = null,
+        expiresIn = params.expiresIn,
+        context,
+        object : DSAuthenticationListener {
+          override fun onSuccess(@NonNull user: DSUser) {
+            result.success(null)
+          }
 
-    DocuSign.init(context, integratorKey = params.integratorKey, mode = DSMode.DEBUG)
-    DocuSign.getInstance().setEnvironment(DSEnvironment.DEMO_ENVIRONMENT)
-    val authDelegate = DocuSign.getInstance().getAuthenticationDelegate()
-    authDelegate.login(
-      accessToken = params.accessToken,
-      refreshToken = null,
-      expiresIn = params.expiresIn,
-      context,
-      object : DSAuthenticationListener {
-        override fun onSuccess(@NonNull user: DSUser) {
-          result.success(null)
-        }
-
-        override fun onError(@NonNull exception: DSAuthenticationException) {
-          result.error("AuthFailed", null, null)
-        }
-      },
-      userAccountId = params.accountId,
-    )
+          override fun onError(@NonNull exception: DSAuthenticationException) {
+            result.error("AuthFailed", null, null)
+          }
+        },
+        userAccountId = params.accountId,
+      )
+    } catch (e: Exception) {
+      result.error("AuthFailed", null, null)
+      return
+    }
   }
 
   private fun captiveSinging(@NonNull call: MethodCall, @NonNull result: Result) {
-    DataBrokerSingleton.instance.captiveSigningResult = result
-    DataBrokerSingleton.instance.captiveSigningCall = call
+    try {
+      DataBrokerSingleton.instance.captiveSigningResult = result
+      DataBrokerSingleton.instance.captiveSigningCall = call
 
-    val intent = Intent(context, WrapActivity::class.java)
-    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-    startActivity(context, intent, null)
+      val intent = Intent(context, WrapActivity::class.java)
+      intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+      startActivity(context, intent, null)
+    } catch (e: IllegalStateException) {
+      result.error("CaptiveSingingFailed", null, null)
+    }
   }
 
   data class AuthModel (
@@ -129,7 +125,10 @@ class DocusignFlutterPlugin: FlutterPlugin, MethodCallHandler, ActivityAware {
   }
 
   override fun onReattachedToActivityForConfigChanges(binding: ActivityPluginBinding) {
-    activity = binding.activity as FlutterActivity
+    val newActivity = binding.activity as? FlutterActivity
+    if (newActivity != null) {
+      activity = newActivity.activity
+    }
   }
 
   override fun onDetachedFromActivity() {
