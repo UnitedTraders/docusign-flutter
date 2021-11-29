@@ -4,6 +4,8 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import androidx.annotation.NonNull
+import androidx.core.content.ContextCompat.startActivity
+import com.docusign.androidsdk.DSEnvironment
 import com.docusign.androidsdk.DocuSign
 
 import io.flutter.embedding.engine.plugins.FlutterPlugin
@@ -15,9 +17,7 @@ import io.flutter.plugin.common.MethodChannel.Result
 
 import com.docusign.androidsdk.dsmodels.DSUser
 import com.docusign.androidsdk.exceptions.DSAuthenticationException
-import com.docusign.androidsdk.exceptions.DSSigningException
 import com.docusign.androidsdk.listeners.DSAuthenticationListener
-import com.docusign.androidsdk.listeners.DSCaptiveSigningListener
 import com.docusign.androidsdk.util.DSMode
 import com.google.gson.Gson
 import io.flutter.embedding.android.FlutterActivity
@@ -60,17 +60,28 @@ class DocusignFlutterPlugin: FlutterPlugin, MethodCallHandler, ActivityAware {
       val arguments: ArrayList<String> = call.arguments as ArrayList<String>
       val json: String = arguments[0]
       val gson = Gson()
-      params = gson?.fromJson(json, AuthModel::class.java)
+      params = gson.fromJson(json, AuthModel::class.java)
     } catch (e: Exception) {
       result.error("AuthFailed", null, null)
       return
     }
 
-    // Temporary constant, need be taken from flutter
-    val refreshToken = "<<REFRESH_TOKEN>>"
+    /*
+       ????????????
+       accountId: authModel.accountId,
+       userId: authModel.userId,
+       userName: authModel.userName,
+       email: authModel.email,
+    */
+
     DocuSign.init(context, integratorKey = params.integratorKey, mode = DSMode.DEBUG)
+    DocuSign.getInstance().setEnvironment(DSEnvironment.DEMO_ENVIRONMENT)
     val authDelegate = DocuSign.getInstance().getAuthenticationDelegate()
-    authDelegate.login(accessToken = params.accessToken, refreshToken = refreshToken,  expiresIn =  28800, context,
+    authDelegate.login(
+      accessToken = params.accessToken,
+      refreshToken = null,
+      expiresIn = params.expiresIn,
+      context,
       object : DSAuthenticationListener {
         override fun onSuccess(@NonNull user: DSUser) {
           result.success(null)
@@ -79,62 +90,23 @@ class DocusignFlutterPlugin: FlutterPlugin, MethodCallHandler, ActivityAware {
         override fun onError(@NonNull exception: DSAuthenticationException) {
           result.error("AuthFailed", null, null)
         }
-      }
+      },
+      userAccountId = params.accountId,
     )
   }
 
   private fun captiveSinging(@NonNull call: MethodCall, @NonNull result: Result) {
-    // TODO необходимо решить проблему с запуском вне Activity, т.к. само создание Intent от нас скрыто - это проблема.
-    // TODO ошибки должны быть более информативными
-//    val params: CaptiveSigningModel
-//    try {
-//      @Suppress("UNCHECKED_CAST")
-//      val arguments: ArrayList<String> = call.arguments as ArrayList<String>
-//      val json: String = arguments[0]
-//      val gson = Gson()
-//      params = gson?.fromJson(json, CaptiveSigningModel::class.java)
-//    } catch (e: Exception) {
-//      result.error("CaptiveSingingFailed", null, null)
-//      return
-//    }
-//
-//    activity.intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-//    DocuSign.getInstance().getSigningDelegate().launchCaptiveSigning(context,
-//      envelopeId = params.envelopeId,
-//      recipientClientUserId = params.recipientClientUserId,
-//      listener = object : DSCaptiveSigningListener {
-//        override fun onCancel(envelopeId: String, recipientId: String) {
-//          result.error("CaptiveSingingFailed", null, null)
-//        }
-//
-//        override fun onError(envelopeId: String?, exception: DSSigningException) {
-//          result.error("CaptiveSingingFailed", null, null)
-//        }
-//
-//        override fun onRecipientSigningError(
-//          envelopeId: String,
-//          recipientId: String,
-//          exception: DSSigningException
-//        ) {
-//          result.error("CaptiveSingingFailed", null, null)
-//        }
-//
-//        override fun onRecipientSigningSuccess(envelopeId: String, recipientId: String) {
-//          print("onRecipientSigningSuccess")
-//        }
-//
-//        override fun onStart(envelopeId: String) {
-//          print("onStart")
-//        }
-//
-//        override fun onSuccess(envelopeId: String) {
-//          result.success(null)
-//        }
-//      })
+    DataBrokerSingleton.instance.captiveSigningResult = result
+    DataBrokerSingleton.instance.captiveSigningCall = call
+
+    val intent = Intent(context, WrapActivity::class.java)
+    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+    startActivity(context, intent, null)
   }
 
   data class AuthModel (
     val accessToken: String,
+    val expiresIn: Int,
     val accountId: String,
     val userId: String,
     val userName: String,
@@ -161,6 +133,6 @@ class DocusignFlutterPlugin: FlutterPlugin, MethodCallHandler, ActivityAware {
   }
 
   override fun onDetachedFromActivity() {
-    channel?.setMethodCallHandler(null)
+    channel.setMethodCallHandler(null)
   }
 }

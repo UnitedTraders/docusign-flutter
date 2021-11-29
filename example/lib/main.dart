@@ -12,6 +12,7 @@ void main() {
 const String accessToken = r'<<NEED_CHANGE>>';
 const String accountId = r'<<NEED_CHANGE>>';
 const String email = r'<<NEED_CHANGE>>';
+const int expiresIn = 28800;
 const String host = r'<<NEED_CHANGE>>';
 const String integratorKey = r'<<NEED_CHANGE>>';
 const String userId = r'<<NEED_CHANGE>>';
@@ -78,12 +79,13 @@ class _MyAppState extends State<MyApp> {
   Future<void> _auth() async {
       var authModel = AuthModel(
           accessToken: accessToken,
+          expiresIn: expiresIn,
           accountId: accountId,
           email: email,
           host: host,
           integratorKey: integratorKey,
           userId: userId,
-          userName: userName);
+          userName: userName,);
       var result = await DocusignFlutter.auth(authModel);
       setState(() {
         _authStatus = result;

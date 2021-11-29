@@ -1,5 +1,6 @@
 class AuthModel {
   late final String accessToken;
+  late final int expiresIn;
   late final String accountId;
   late final String userId;
   late final String userName;
@@ -8,6 +9,7 @@ class AuthModel {
   late final String integratorKey;
 
   AuthModel({required this.accessToken,
+    required this.expiresIn,
     required this.accountId,
     required this.userId,
     required this.userName,
@@ -17,6 +19,7 @@ class AuthModel {
 
   AuthModel.fromJson(Map<String, dynamic> json)
       : accessToken = json['accessToken'],
+        expiresIn = json['expiresIn'],
         accountId = json['accountId'],
         userId = json['userId'],
         userName = json['userName'],
@@ -26,6 +29,7 @@ class AuthModel {
 
   Map<String, dynamic> toJson() => {
     'accessToken': accessToken,
+    'expiresIn': expiresIn,
     'accountId': accountId,
     'userId': userId,
     'userName': userName,
