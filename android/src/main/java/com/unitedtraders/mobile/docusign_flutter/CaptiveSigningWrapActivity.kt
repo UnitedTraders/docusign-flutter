@@ -78,7 +78,7 @@ class CaptiveSigningWrapActivity : AppCompatActivity() {
                     }
                 })
         } catch (e: Exception) {
-            result.error(Constants.errorCommonCode, Constants.errorCaptiveSingingFailed, null)
+            result.error(Constants.errorCommonCode, Constants.errorCaptiveSingingFailed, e.message)
         }
     }
 }

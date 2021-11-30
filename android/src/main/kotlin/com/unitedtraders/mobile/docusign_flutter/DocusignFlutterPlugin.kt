@@ -91,7 +91,7 @@ class DocusignFlutterPlugin: FlutterPlugin, MethodCallHandler, ActivityAware {
       val intent = Intent(context, CaptiveSigningWrapActivity::class.java)
       intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
       startActivity(context, intent, null)
-    } catch (e: IllegalStateException) {
+    } catch (e: Exception) {
       result.error(Constants.errorCommonCode, Constants.errorCaptiveSingingFailed, "Cannot start wrap activity")
     }
   }

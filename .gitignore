@@ -21,4 +21,7 @@ doc/api/
 *.js.map
 
 # Idea
+*.iml
+*.ipr
+*.iws
 /.idea
