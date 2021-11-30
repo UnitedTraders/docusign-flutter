@@ -44,10 +44,6 @@ class DocusignFlutterPlugin: FlutterPlugin, MethodCallHandler, ActivityAware {
     }
   }
 
-  override fun onDetachedFromEngine(@NonNull binding: FlutterPlugin.FlutterPluginBinding) {
-    channel.setMethodCallHandler(null)
-  }
-
   private fun login(@NonNull call: MethodCall, @NonNull result: Result) {
     val params: AuthModel
     try {
@@ -57,7 +53,7 @@ class DocusignFlutterPlugin: FlutterPlugin, MethodCallHandler, ActivityAware {
       val gson = Gson()
       params = gson.fromJson(json, AuthModel::class.java)
     } catch (e: Exception) {
-      result.error("AuthFailed", null, null)
+      result.error(Constants.errorCommonCode, Constants.errorAuthFailed, "Cannot parse AuthModel json: ${e.message}")
       return
     }
 
@@ -76,13 +72,13 @@ class DocusignFlutterPlugin: FlutterPlugin, MethodCallHandler, ActivityAware {
           }
 
           override fun onError(@NonNull exception: DSAuthenticationException) {
-            result.error("AuthFailed", null, null)
+            result.error(Constants.errorCommonCode, Constants.errorAuthFailed, exception.message)
           }
         },
         userAccountId = params.accountId,
       )
     } catch (e: Exception) {
-      result.error("AuthFailed", null, null)
+      result.error(Constants.errorCommonCode, Constants.errorAuthFailed, e.message)
       return
     }
   }
@@ -92,30 +88,17 @@ class DocusignFlutterPlugin: FlutterPlugin, MethodCallHandler, ActivityAware {
       DataBrokerSingleton.instance.captiveSigningResult = result
       DataBrokerSingleton.instance.captiveSigningCall = call
 
-      val intent = Intent(context, WrapActivity::class.java)
+      val intent = Intent(context, CaptiveSigningWrapActivity::class.java)
       intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
       startActivity(context, intent, null)
     } catch (e: IllegalStateException) {
-      result.error("CaptiveSingingFailed", null, null)
+      result.error(Constants.errorCommonCode, Constants.errorCaptiveSingingFailed, "Cannot start wrap activity")
     }
   }
 
-  data class AuthModel (
-    val accessToken: String,
-    val expiresIn: Int,
-    val accountId: String,
-    val userId: String,
-    val userName: String,
-    val email: String,
-    val host: String,
-    val integratorKey: String,
-  )
-
-  data class CaptiveSigningModel(
-    val envelopeId: String,
-    val recipientUserName: String,
-    val recipientEmail: String,
-    val recipientClientUserId: String,)
+  override fun onDetachedFromEngine(@NonNull binding: FlutterPlugin.FlutterPluginBinding) {
+    channel.setMethodCallHandler(null)
+  }
 
   override fun onAttachedToActivity(binding: ActivityPluginBinding) {
     activity = binding.activity as FlutterActivity
@@ -134,4 +117,21 @@ class DocusignFlutterPlugin: FlutterPlugin, MethodCallHandler, ActivityAware {
   override fun onDetachedFromActivity() {
     channel.setMethodCallHandler(null)
   }
+
+  data class AuthModel (
+    val accessToken: String,
+    val expiresIn: Int,
+    val accountId: String,
+    val userId: String,
+    val userName: String,
+    val email: String,
+    val host: String,
+    val integratorKey: String,
+  )
+
+  data class CaptiveSigningModel(
+    val envelopeId: String,
+    val recipientUserName: String,
+    val recipientEmail: String,
+    val recipientClientUserId: String,)
 }
