@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.unitedtraders.mobile.docusign_flutter">
+
+    <application>
+        <activity
+            android:name=".CaptiveSigningWrapActivity"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.Light"/>
+    </application>
+
+</manifest>
