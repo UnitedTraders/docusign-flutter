@@ -13,11 +13,11 @@ buildscript {
 
 allprojects {
     repositories {
-        google()
-        mavenCentral()
         maven {
             url 'https://docucdn-a.akamaihd.net/prod/docusignandroidsdk'
         }
+        google()
+        mavenCentral()
     }
 }
 
