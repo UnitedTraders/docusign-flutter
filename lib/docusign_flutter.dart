@@ -9,13 +9,13 @@ import 'model/auth_model.dart';
 class DocusignFlutter {
   static const MethodChannel _channel = MethodChannel('docusign_flutter');
 
-  static Future<bool> auth(AuthModel authModel) async {
+  static Future<String?> auth(AuthModel authModel) async {
     try {
       String json = jsonEncode(authModel);
       await _channel.invokeMethod('login', [json]);
-      return true;
+      return null;
     } catch (exception) {
-      return false;
+      return exception.toString();
     }
   }
 
