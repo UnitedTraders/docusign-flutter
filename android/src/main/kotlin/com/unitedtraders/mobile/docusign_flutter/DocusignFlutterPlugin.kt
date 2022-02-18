@@ -20,6 +20,7 @@ import com.docusign.androidsdk.exceptions.DSAuthenticationException
 import com.docusign.androidsdk.listeners.DSAuthenticationListener
 import com.docusign.androidsdk.util.DSMode
 import com.google.gson.Gson
+import com.google.gson.annotations.SerializedName;
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding
 
@@ -122,19 +123,31 @@ class DocusignFlutterPlugin: FlutterPlugin, MethodCallHandler, ActivityAware {
   }
 
   data class AuthModel (
+    @SerializedName("accessToken")
     val accessToken: String,
+    @SerializedName("expiresIn")
     val expiresIn: Int,
+    @SerializedName("accountId")
     val accountId: String,
+    @SerializedName("userId")
     val userId: String,
+    @SerializedName("userName")
     val userName: String,
+    @SerializedName("email")
     val email: String,
+    @SerializedName("host")
     val host: String,
+    @SerializedName("integratorKey")
     val integratorKey: String,
   )
 
   data class CaptiveSigningModel(
+    @SerializedName("envelopeId")
     val envelopeId: String,
+    @SerializedName("recipientUserName")
     val recipientUserName: String,
+    @SerializedName("recipientEmail")
     val recipientEmail: String,
+    @SerializedName("recipientClientUserId")
     val recipientClientUserId: String,)
 }
