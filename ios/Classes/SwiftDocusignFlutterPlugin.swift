@@ -63,7 +63,7 @@ public class SwiftDocusignFlutterPlugin: NSObject, FlutterPlugin {
         }
         
         DSMManager.login(withAccessToken: authModel.accessToken,
-                         expiresIn: authModel.expiresIn,
+                         expiresIn: Calendar.current.date(byAdding: .second, value: authModel.expiresIn, to: self)!,
                          accountId: authModel.accountId,
                          userId: authModel.userId,
                          userName: authModel.userName,
