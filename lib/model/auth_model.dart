@@ -7,6 +7,8 @@ class AuthModel {
   late final String email;
   late final String host;
   late final String integratorKey;
+  late final String refreshToken;
+  late final int refreshTokenExpiresIn;
 
   AuthModel({required this.accessToken,
     required this.expiresIn,
@@ -25,7 +27,9 @@ class AuthModel {
         userName = json['userName'],
         email = json['email'],
         host = json['host'],
-        integratorKey = json['integratorKey'];
+        integratorKey = json['integratorKey'],
+        refreshToken = json['refreshToken'],
+        refreshTokenExpiresIn = json['refreshTokenExpiresIn'];
 
   Map<String, dynamic> toJson() => {
     'accessToken': accessToken,
@@ -36,5 +40,7 @@ class AuthModel {
     'email': email,
     'host': host,
     'integratorKey': integratorKey,
+    'refreshToken': refreshToken,
+    'refreshTokenExpiresIn': refreshTokenExpiresIn,
   };
 }

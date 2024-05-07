@@ -1,6 +1,6 @@
 name: docusign_flutter
 description: Docusign SDK flutter plugin
-version: 0.0.1
+version: 0.0.6
 homepage:
 
 environment:
