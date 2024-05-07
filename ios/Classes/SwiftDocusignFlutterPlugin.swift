@@ -1,6 +1,7 @@
 import Flutter
 import UIKit
 import DocuSignSDK
+import Foundation
 
 public class SwiftDocusignFlutterPlugin: NSObject, FlutterPlugin {
     private var loginResult: FlutterResult?
@@ -62,8 +63,8 @@ public class SwiftDocusignFlutterPlugin: NSObject, FlutterPlugin {
             return
         }
         
+        let currentDate = Date()
         DSMManager.login(withAccessToken: authModel.accessToken,
-                         expiresIn: Calendar.current.date(byAdding: .second, value: authModel.expiresIn, to: self)!,
                          accountId: authModel.accountId,
                          userId: authModel.userId,
                          userName: authModel.userName,
@@ -71,6 +72,7 @@ public class SwiftDocusignFlutterPlugin: NSObject, FlutterPlugin {
                          host: hostUrl,
                          integratorKey: authModel.integratorKey,
                          refreshToken: authModel.refreshToken,
+                         expiresIn: Calendar.current.date(byAdding: .second, value: authModel.expiresIn, to: currentDate),
                          completion: { (accountInfo, error) in
             if (error != nil) {
                 self.loginResult?(self.buildError(title: "auth failed", details: error?.localizedDescription))
