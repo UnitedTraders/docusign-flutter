@@ -63,12 +63,14 @@ public class SwiftDocusignFlutterPlugin: NSObject, FlutterPlugin {
         }
         
         DSMManager.login(withAccessToken: authModel.accessToken,
+                         expiresIn: authModel.expiresIn,
                          accountId: authModel.accountId,
                          userId: authModel.userId,
                          userName: authModel.userName,
                          email: authModel.email,
                          host: hostUrl,
                          integratorKey: authModel.integratorKey,
+                         refreshToken: authModel.refreshToken,
                          completion: { (accountInfo, error) in
             if (error != nil) {
                 self.loginResult?(self.buildError(title: "auth failed", details: error?.localizedDescription))
