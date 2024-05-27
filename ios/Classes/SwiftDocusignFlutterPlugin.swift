@@ -71,7 +71,7 @@ public class SwiftDocusignFlutterPlugin: NSObject, FlutterPlugin {
                          email: authModel.email,
                          host: hostUrl,
                          integratorKey: authModel.integratorKey,
-                         refreshToken: authModel.refreshToken,
+                         refreshToken: null,
                          expiresIn: Calendar.current.date(byAdding: .second, value: authModel.expiresIn, to: currentDate),
                          completion: { (accountInfo, error) in
             if (error != nil) {
