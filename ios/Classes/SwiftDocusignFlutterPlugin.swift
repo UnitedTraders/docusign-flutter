@@ -1,7 +1,6 @@
 import Flutter
 import UIKit
 import DocuSignSDK
-import Foundation
 
 public class SwiftDocusignFlutterPlugin: NSObject, FlutterPlugin {
     private var loginResult: FlutterResult?
@@ -138,14 +137,12 @@ public class SwiftDocusignFlutterPlugin: NSObject, FlutterPlugin {
 
 struct AuthModel: Decodable {
     let accessToken: String;
-    let expiresIn: Int;
     let accountId: String;
     let userId: String;
     let userName: String;
     let email: String;
     let host: String;
     let integratorKey: String;
-    let refreshToken: String;
 }
 
 struct CaptiveSignModel: Decodable {
