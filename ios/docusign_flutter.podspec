@@ -15,7 +15,7 @@ Docusign SDK flutter plugin
   s.source           = { :path => '.' }
   s.source_files = 'Classes/**/*'
   s.dependency 'Flutter'
-  s.dependency 'DocuSign'
+  s.dependency 'DocuSign', '~> 2.5.0'
   s.platform = :ios, '8.0'
 
   # Flutter.framework does not contain a i386 slice.

@@ -31,7 +31,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  bool? _authStatus;
+  String? _authStatus;
   bool? _signingStatus;
 
   @override
@@ -53,7 +53,7 @@ class _MyAppState extends State<MyApp> {
         ),
         body: Center(
           child: Column(children: [
-            Text('Auth status: ${_convertStatus(_authStatus)}\n'),
+            Text('Auth status: $_authStatus\n'),
             ElevatedButton(
               onPressed: () => _auth(),
               child: const Text('Auth'),

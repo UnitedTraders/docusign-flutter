@@ -1,7 +1,7 @@
 PODS:
-  - DocuSign (2.5)
+  - DocuSign (2.5.3)
   - docusign_flutter (0.0.1):
-    - DocuSign
+    - DocuSign (~> 2.5.0)
     - Flutter
   - Flutter (1.0.0)
 
@@ -20,10 +20,10 @@ EXTERNAL SOURCES:
     :path: Flutter
 
 SPEC CHECKSUMS:
-  DocuSign: 250830b679df251ffca94f6bde2a0071f4745216
-  docusign_flutter: 0683c9f5c7e02176bef33caadc7622fb9dc4cf4b
+  DocuSign: 00ce0722022d84e5e2042916188e4641b96a6eaf
+  docusign_flutter: 121502aedf0ad3f8d50faec66e18ee493434c7e4
   Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
 
-PODFILE CHECKSUM: aafe91acc616949ddb318b77800a7f51bffa2a4c
+PODFILE CHECKSUM: c4c93c5f6502fe2754f48404d3594bf779584011
 
 COCOAPODS: 1.15.2

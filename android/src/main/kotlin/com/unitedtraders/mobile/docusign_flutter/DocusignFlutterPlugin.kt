@@ -1,5 +1,7 @@
 package com.unitedtraders.mobile.docusign_flutter
 
+import android.util.Log
+
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
@@ -69,8 +71,8 @@ class DocusignFlutterPlugin: FlutterPlugin, MethodCallHandler, ActivityAware {
         accessToken = params.accessToken,
         refreshToken = null,
         expiresIn = params.expiresIn,
-        context,
-        object : DSAuthenticationListener {
+        context = context,
+        listener = object : DSAuthenticationListener {
           override fun onSuccess(@NonNull user: DSUser) {
             result.success(null)
           }
