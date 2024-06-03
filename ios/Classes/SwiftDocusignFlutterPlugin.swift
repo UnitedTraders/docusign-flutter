@@ -69,8 +69,8 @@ public class SwiftDocusignFlutterPlugin: NSObject, FlutterPlugin {
                          email: authModel.email,
                          host: hostUrl,
                          integratorKey: authModel.integratorKey,
-                         refreshToken: nil,
-                         expiresIn: nil,
+//                         refreshToken: nil,
+//                         expiresIn: nil,
                          completion: { (accountInfo, error) in
             if (error != nil) {
                 self.loginResult?(self.buildError(title: "auth failed", details: error?.localizedDescription))
